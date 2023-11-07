@@ -1,18 +1,45 @@
-function loadCss(cssObject) {
-  if (typeof cssObject === "object") {
-    cssObject.forEach((css) => {
-      const head = document.getElementsByTagName("head")[0];
+function loadCss(css) {
+  console.log(css);
+
+  try {
+    const head = document.getElementsByTagName("head")[0];
+    function cssAttribute(css) {
       const link = document.createElement("link");
-      link.id = createGuid();
-      link.rel = css.rel;
-      link.href = css.href;
-      link.integrity = css.integrity;
-      link.crossOrigin = css.crossOrigin;
-      link.referrerPolicy = css.referrerpolicy;
+      link.setAttribute("id", createGuid());
+      if (css.rel) link.setAttribute("rel", css.rel);
+      if (css.href) link.setAttribute("href", css.href);
+      if (css.integrity) link.setAttribute("integrity", css.integrity);
+      if (css.crossorigin) link.setAttribute("crossorigin", css.crossorigin);
+      if (css.referrerpolicy)
+        link.setAttribute("referrerpolicy", css.referrerpolicy);
+
       head.insertAdjacentElement("beforeend", link);
-    });
-  } else {
-    console.error("Invalid cssObject argument");
+      console.log(`CSS has been added, link id: ${link.id}`);
+    }
+
+    if (typeof css === "object") {
+      const arrCss = Array.isArray(css);
+      if (arrCss) {
+        css.forEach((css) => {
+          cssAttribute(css);
+        });
+      } else {
+        cssAttribute(css);
+      }
+    } else if (typeof css === "string") {
+      const temDiv = document.createElement("div");
+      createHTML(temDiv, css);
+      const newCssLink = temDiv.querySelector("link");
+      if (newCssLink) {
+        newCssLink.id = createGuid();
+        head.insertAdjacentElement("beforeend", newCssLink);
+        console.log(`CSS has been added, link id: ${newCssLink.id}`);
+      }
+    } else {
+      console.warn(`Invalid css argument!`);
+    }
+  } catch (error) {
+    console.error("Invalid argument", error);
   }
 }
 

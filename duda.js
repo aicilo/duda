@@ -1,6 +1,4 @@
 function loadCss(css) {
-  console.log(css);
-
   try {
     const head = document.getElementsByTagName("head")[0];
     function cssAttribute(css) {

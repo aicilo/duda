@@ -1,5 +1,5 @@
 function loadCss(cssObject) {
-  if (typeof css === "object") {
+  if (typeof cssObject === "object") {
     cssObject.forEach((css) => {
       const head = document.getElementsByTagName("head")[0];
       const link = document.createElement("link");
@@ -11,6 +11,8 @@ function loadCss(cssObject) {
       link.referrerPolicy = css.referrerpolicy;
       head.insertAdjacentElement("beforeend", link);
     });
+  } else {
+    console.error("Invalid cssObject argument");
   }
 }
 
